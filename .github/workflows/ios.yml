@@ -69,7 +69,7 @@ jobs:
           xcodebuild -exportArchive -archivePath $RUNNER_TEMP/CICDAbbot.xcarchive -exportOptionsPlist $EXPORT_OPTS_PATH -exportPath $RUNNER_TEMP/build -allowProvisioningUpdates        
     
       - name: Upload application
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact
         with:
           name: app
           path: ${{ runner.temp }}/build/CICDAbbot.ipa
