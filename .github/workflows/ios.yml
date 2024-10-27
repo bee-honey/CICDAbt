@@ -59,7 +59,7 @@ jobs:
           -configuration Release \
           -destination generic/platform=iOS \
           clean archive
-          ls -la $RUNNER_TEMP/CICDAbbot.xcarchive
+          ls -la $RUNNER_TEMP
   
       - name: export ipa
         env:
