@@ -35,5 +35,8 @@ jobs:
       - name: Reset any uncommited changes
         run: git reset --hard HEAD
 
+      - name: Check status of branch
+        run: git status
+
       - name: Increment build number and commit
         run: bundle exec fastlane increment_and_commit
