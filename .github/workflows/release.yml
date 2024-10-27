@@ -11,7 +11,16 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+      
+      - name: Setup ruby
+        uses: ruby/setup-ruby@v1
 
+      - name: Install Bundler
+        uses: gem install bundler
+  
+      - name: Checkout gems
+        uses: bundle install
+  
       - name: Run the artifact upload script
         run: ./BuildScripts/upload_artifacts.sh
         env:
