@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    runs-on:  macos-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout repository
@@ -14,12 +14,14 @@ jobs:
       
       - name: Setup ruby
         uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1  # Specify the Ruby version you need
 
       - name: Install Bundler
-        uses: gem install bundler
-  
-      - name: Checkout gems
-        uses: bundle install
+        run: gem install bundler
+      
+      - name: Install dependencies
+        run: bundle install
   
       - name: Run the artifact upload script
         run: ./BuildScripts/upload_artifacts.sh
