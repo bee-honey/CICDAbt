@@ -4,6 +4,7 @@ default_platform :ios
 platform :ios do
     desc 'Increment the build number after release'
     lane :increment_and_commit do
+        sh "rm -rf private_keys"
         increment_build_number
         commit_version_bump
     end
