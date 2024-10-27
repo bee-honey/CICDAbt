@@ -7,5 +7,6 @@ platform :ios do
         sh "rm -rf private_keys"
         increment_build_number
         commit_version_bump
+        sh "git push origin main"
     end
 end
