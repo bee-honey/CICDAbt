@@ -5,8 +5,26 @@ platform :ios do
     desc 'Increment the build number after release'
     lane :increment_and_commit do
         sh "rm -rf private_keys"
+        
+        # Configure Git to use GITHUB_TOKEN for authentication
+        sh "git config --global user.email 'github-actions[bot]@users.noreply.github.com'"
+        sh "git config --global user.name 'github-actions[bot]'"
+        sh "git remote set-url origin https://${GITHUB_ACTOR}:${GITHUB_BOT_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+
         increment_build_number
         commit_version_bump
+        sh "git push origin main"
+    end
+
+    desc 'For Demo purpose: Increment the build number and push it for quick demo'
+    lane :demo_commit do
+        sh "rm -rf private_keys"
+        
+        increment_build_number
+        commit_version_bump(
+            message: "For demo Quick commit with a bump of version"
+        )
+
         sh "git push origin main"
     end
 end
