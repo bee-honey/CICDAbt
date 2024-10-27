@@ -73,4 +73,4 @@ jobs:
         with:
           name: app
           path: ${{ runner.temp }}/build/CICDAbbot.ipa
-          retention-days: 3
+          retention-days: 1

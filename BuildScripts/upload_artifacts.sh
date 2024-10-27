@@ -12,7 +12,7 @@ echo "Current SHA: $CURRENT_SHA"
 RUN_ID=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
               -H "Accept: application/vnd.github+json" \
               "https://api.github.com/repos/$OWNER/$REPO/actions/runs" | \
-              jq '.workflow_runs[0].id')
+              jq '.workflow_runs[1].id')
 
 # NOTE: Getting incorrect runid here, need to figure out the CURRENTSHA matching logic
 # For now, will go with the latest run
