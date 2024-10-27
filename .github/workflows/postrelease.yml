@@ -1,0 +1,30 @@
+name: Manual Workflow
+
+# Only runs when manually triggered
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on:  macos-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - uses: ruby/setup-ruby@v1
+
+      - name: Install Bundler
+        uses: gem install bundler
+
+      - name: Checkout gems
+        uses: bundle install
+
+      - name: Run the artifact upload script
+        run: ./BuildScripts/upload_artifacts.sh
+        env:
+            GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+            APP_STORE_CONNECT_PRIVATE_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY_BASE64 }}
+            APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+            APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
+        continue-on-error: false
