@@ -7,12 +7,16 @@ on:
 jobs:
   build:
     runs-on:  macos-latest
+    
+    env:
+      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
-
       - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Run the artifact upload script
         run: ./BuildScripts/upload_artifacts.sh
+        env:
+            GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
         continue-on-error: false

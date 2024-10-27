@@ -1,7 +1,6 @@
 #!/bin/bash
 
 # Github token to be pulled from the secure actions, @myself(delete this after the interview)
-GITHUB_TOKEN=${{ secrets.GH_TOKEN }}
 OWNER="bee-honey" 
 REPO="CICDAbt" #Move it to a common properties file, else
 
