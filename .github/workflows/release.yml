@@ -31,3 +31,6 @@ jobs:
             APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
             APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         continue-on-error: false
+
+      - name: Increment build number and commit
+        run: bundle exec fastlane increment_and_commit
