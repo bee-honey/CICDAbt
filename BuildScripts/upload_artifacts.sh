@@ -12,8 +12,12 @@ echo "Current SHA: $CURRENT_SHA"
 RUN_ID=$(curl -s -H "Authorization: token $GITHUB_TOKEN" \
               -H "Accept: application/vnd.github+json" \
               "https://api.github.com/repos/$OWNER/$REPO/actions/runs" | \
-              jq --arg CURRENT_SHA "$CURRENT_SHA" \
-                 '.workflow_runs | sort_by(.created_at) | reverse | .[] | select(.head_sha == $CURRENT_SHA) | .id' | head -n 1)
+              jq '.workflow_runs[0].id')
+
+# NOTE: Getting incorrect runid here, need to figure out the CURRENTSHA matching logic
+# For now, will go with the latest run
+              # jq --arg CURRENT_SHA "$CURRENT_SHA" \
+              #    '.workflow_runs | sort_by(.created_at) | reverse | .[] | select(.head_sha == $CURRENT_SHA) | .id' | head -n 1)
 
 if [ -z "$RUN_ID" ]; then
   echo "CI-ERROR: No workflow run for the SHA: $CURRENT_SHA"
@@ -60,7 +64,7 @@ fi
 #      "https://api.github.com/repos/OWNER/REPO/actions/runs"
 
 
-# # Need to check the current SHA and Extract the run_id out of all the runs, instead of the lates as .workflow_runs[0]
+# Need to check the current SHA and Extract the run_id out of all the runs, instead of the lates as .workflow_runs[0]
 # RUN_ID=$(curl -s -H "Authorization: token YOUR_GITHUB_TOKEN" \
 #               -H "Accept: application/vnd.github+json" \
 #               "https://api.github.com/repos/OWNER/REPO/actions/runs" | \
