@@ -83,9 +83,17 @@ if [[ ! -s "$APP_STORE_CONNECT_PRIVATE_KEY_PATH" ]]; then
   exit 1
 fi
 
+echo "CI-INFO: Uploading the IPA to testflight....."
 # Upload .ipa file to TestFlight
 xcrun altool --upload-app --type ios \
   --file "$IPA_PATH" \
   --apiKey "$APP_STORE_CONNECT_KEY_ID" \
   --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID" \
   --output-format xml
+
+if [[ $? -eq 0 ]]; then
+  echo "CI-INFO: Upload successful!"
+else
+  echo "CI-ERROR: Upload failed!"
+  exit 1
+fi
