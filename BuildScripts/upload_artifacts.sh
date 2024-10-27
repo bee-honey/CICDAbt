@@ -70,12 +70,15 @@ if [[ -z "$IPA_PATH" ]]; then
 fi
 
 # create variables
-APP_STORE_CONNECT_PRIVATE_KEY_PATH=$RUNNER_TEMP/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+echo "CI-INFO: Creating private keys folder"
+pwd
+mkdir -p private_keys
+APP_STORE_CONNECT_PRIVATE_KEY_PATH=private_keys/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
 
 # import certificate and provisioning profile from secrets
 echo -n "$APP_STORE_CONNECT_PRIVATE_KEY_BASE64" | base64 --decode -o $APP_STORE_CONNECT_PRIVATE_KEY_PATH
 
-if [[ -z "$APP_STORE_CONNECT_PRIVATE_KEY_PATH" ]]; then
+if [[ ! -s "$APP_STORE_CONNECT_PRIVATE_KEY_PATH" ]]; then
   echo "Ci-ERROR: No AppstoreConnect p8 file found."
   exit 1
 fi
@@ -85,5 +88,4 @@ xcrun altool --upload-app --type ios \
   --file "$IPA_PATH" \
   --apiKey "$APP_STORE_CONNECT_KEY_ID" \
   --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID" \
-  --apiKeyPath "$APP_STORE_CONNECT_PRIVATE_KEY_PATH" \
   --output-format xml
