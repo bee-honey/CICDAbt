@@ -58,7 +58,8 @@ jobs:
           -sdk iphoneos \
           -configuration Release \
           -destination generic/platform=iOS \
-          clean archive          
+          clean archive
+          ls -la $RUNNER_TEMP/CICDAbbot.xcarchive
   
       - name: export ipa
         env:
