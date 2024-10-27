@@ -7,9 +7,6 @@ on:
 jobs:
   build:
     runs-on:  macos-latest
-    
-    env:
-      GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
 
     steps:
       - name: Checkout repository
@@ -19,4 +16,7 @@ jobs:
         run: ./BuildScripts/upload_artifacts.sh
         env:
             GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+            APP_STORE_CONNECT_PRIVATE_KEY_BASE64: ${{ secrets.APP_STORE_CONNECT_PRIVATE_KEY_BASE64 }}
+            APP_STORE_CONNECT_KEY_ID: ${{ secrets.APP_STORE_CONNECT_KEY_ID }}
+            APP_STORE_CONNECT_ISSUER_ID: ${{ secrets.APP_STORE_CONNECT_ISSUER_ID }}
         continue-on-error: false

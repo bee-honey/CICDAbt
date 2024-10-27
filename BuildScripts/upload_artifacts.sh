@@ -50,10 +50,40 @@ curl -L -H "Authorization: token $GITHUB_TOKEN" \
 echo "CI-INFO: Artifact downloaded as artifact.zip"
 
 # Finally lets Check if the file exists and has some size
-if [[ -s artifact.zip ]]; then
+if [[ -s $DOWNLOAD_PATH ]]; then
   echo "CI-INFO: Artifact downloaded successfully as artifact.zip"
 else
   echo "CI-ERROR: Failed to download artifact."
   exit 1
 fi
 
+#unzip it
+unzip "$RUNNER_TEMP/artifact.zip" -d "$RUNNER_TEMP/artifact"
+
+# Find the .ipa file
+IPA_PATH=$(find "$RUNNER_TEMP/artifact" -name "*.ipa" | head -n 1)
+
+# Check if .ipa was found
+if [[ -z "$IPA_PATH" ]]; then
+  echo "Ci-ERROR: No .ipa file found in the extracted artifact."
+  exit 1
+fi
+
+# create variables
+APP_STORE_CONNECT_PRIVATE_KEY_PATH=$RUNNER_TEMP/AuthKey_${APP_STORE_CONNECT_KEY_ID}.p8
+
+# import certificate and provisioning profile from secrets
+echo -n "$APP_STORE_CONNECT_PRIVATE_KEY_BASE64" | base64 --decode -o $APP_STORE_CONNECT_PRIVATE_KEY_PATH
+
+if [[ -z "$APP_STORE_CONNECT_PRIVATE_KEY_PATH" ]]; then
+  echo "Ci-ERROR: No AppstoreConnect p8 file found."
+  exit 1
+fi
+
+# Upload .ipa file to TestFlight
+xcrun altool --upload-app --type ios \
+  --file "$IPA_PATH" \
+  --apiKey "$APP_STORE_CONNECT_KEY_ID" \
+  --apiIssuer "$APP_STORE_CONNECT_ISSUER_ID" \
+  --apiKeyPath "$APP_STORE_CONNECT_PRIVATE_KEY_PATH" \
+  --output-format xml
