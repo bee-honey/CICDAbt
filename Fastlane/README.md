@@ -23,6 +23,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 Increment the build number after release
 
+### ios demo_commit
+
+```sh
+[bundle exec] fastlane ios demo_commit
+```
+
+For Demo purpose: Increment the build number and push it for quick demo
+
 ----
 
 This README.md is auto-generated and will be re-generated every time [_fastlane_](https://fastlane.tools) is run.
